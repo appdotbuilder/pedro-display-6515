@@ -4,12 +4,6 @@ import 'dotenv/config';
 import cors from 'cors';
 import superjson from 'superjson';
 
-// Import schemas and handlers
-import { createNameInputSchema, getNameInputSchema } from './schema';
-import { createName } from './handlers/create_name';
-import { getName } from './handlers/get_name';
-import { getPedro } from './handlers/get_pedro';
-
 const t = initTRPC.create({
   transformer: superjson,
 });
@@ -21,20 +15,6 @@ const appRouter = router({
   healthcheck: publicProcedure.query(() => {
     return { status: 'ok', timestamp: new Date().toISOString() };
   }),
-  
-  // Create a new name
-  createName: publicProcedure
-    .input(createNameInputSchema)
-    .mutation(({ input }) => createName(input)),
-  
-  // Get a name by ID
-  getName: publicProcedure
-    .input(getNameInputSchema)
-    .query(({ input }) => getName(input)),
-  
-  // Get Pedro specifically - main endpoint for displaying Pedro on screen
-  getPedro: publicProcedure
-    .query(() => getPedro()),
 });
 
 export type AppRouter = typeof appRouter;
